@@ -1,90 +1,91 @@
-\# Hiver SDE Intern Take-Home — AppleSupport AI Support Agent
+<div align="center">
 
+# ⚡ Resolve Engine
 
+### Evidence-Grounded AI Customer Support Agent
 
-\## Overview
+**Classify → Retrieve → Generate → Verify → Escalate**
 
+An AI support agent for AppleSupport that combines LLM reasoning with historical support evidence to draft grounded replies and avoid unsupported automation.
 
+<br>
 
-This project builds an AI support agent for the AppleSupport brand using the Customer Support on Twitter (TWCS) dataset.
+![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white)
+![LLM](https://img.shields.io/badge/LLM-Gemini-4285F4)
+![Retrieval](https://img.shields.io/badge/Retrieval-TF--IDF-2EA44F)
+![Evaluation](https://img.shields.io/badge/Golden%20Set-150%20Examples-8A2BE2)
+![Status](https://img.shields.io/badge/Status-Take--Home%20Complete-2EA44F)
 
+</div>
 
+---
 
-Given a customer message, the agent:
+# 🚀 Overview
 
+**Resolve Engine** is an AI-powered customer-support agent built for the **AppleSupport** brand using the **Customer Support on Twitter (TWCS)** dataset.
 
+The system is designed around a practical support workflow:
 
-1\. Classifies the customer's primary support intent.
+> **Understand the issue → find relevant historical resolutions → draft a grounded response → decide whether automation is trustworthy.**
 
-2\. Retrieves historically similar AppleSupport support interactions.
+Given a new customer message, Resolve Engine:
 
-3\. Generates a response grounded in those historical interactions.
+1. **Classifies** the primary support intent.
+2. **Retrieves** historically similar AppleSupport interactions.
+3. **Generates** a response grounded in those retrieved cases.
+4. **Evaluates** the quality and strength of the available evidence.
+5. **Auto-handles or escalates** the case with an explicit reason.
 
-4\. Decides whether the response should be auto-handled or escalated to a human.
+The main design principle is:
 
-5\. Provides a reason and supporting evidence for the decision.
+> **When evidence is insufficient, escalation is preferable to a confident but unsupported answer.**
 
+This makes Resolve Engine an **evidence-aware support agent**, rather than simply a general-purpose chatbot.
 
+---
 
-The design prioritizes safe automation: when the system lacks sufficient confidence or supporting evidence, it can escalate instead of confidently inventing an answer.
-
-
-
-\---
-
-
-
-\## Architecture
-
-
+# 🧠 System Architecture
 
 ```text
-
-Customer Message
-
-&#x20;     |
-
-&#x20;     v
-
-Intent Classification
-
-(Gemini)
-
-&#x20;     |
-
-&#x20;     v
-
-Historical Retrieval
-
-(TF-IDF over AppleSupport cases)
-
-&#x20;     |
-
-&#x20;     v
-
-Grounded Response Generation
-
-(Gemini)
-
-&#x20;     |
-
-&#x20;     v
-
-Trust / Escalation Gate
-
-&#x20;     |
-
-&#x20;     +----------------------+
-
-&#x20;     |                      |
-
-&#x20;     v                      v
-
-&#x20;AUTO-HANDLE             ESCALATE
-
-&#x20;     |                      |
-
-&#x20;     v                      v
-
-&#x20;Draft reply             Human review
-
+                         ┌──────────────────────┐
+                         │   Customer Message   │
+                         └──────────┬───────────┘
+                                    │
+                                    ▼
+                         ┌──────────────────────┐
+                         │ Intent Classification│
+                         │        Gemini        │
+                         └──────────┬───────────┘
+                                    │
+                              Intent + Confidence
+                                    │
+                                    ▼
+                         ┌──────────────────────┐
+                         │ Historical Retrieval │
+                         │   TF-IDF + Cosine    │
+                         │      Similarity      │
+                         └──────────┬───────────┘
+                                    │
+                             Supporting Cases
+                                    │
+                                    ▼
+                         ┌──────────────────────┐
+                         │ Grounded Response    │
+                         │ Generation (Gemini)  │
+                         └──────────┬───────────┘
+                                    │
+                              Draft + Recommendation
+                                    │
+                                    ▼
+                         ┌──────────────────────┐
+                         │      Trust Gate      │
+                         │ Confidence + Evidence│
+                         └──────────┬───────────┘
+                                    │
+                           ┌────────┴────────┐
+                           │                 │
+                           ▼                 ▼
+                     AUTO-HANDLE         ESCALATE
+                           │                 │
+                           ▼                 ▼
+                      Draft Reply       Human Review
