@@ -6,9 +6,7 @@
 
 **Understand → Retrieve → Generate → Verify → Escalate**
 
-Resolve Engine is an AI-powered customer-support agent for AppleSupport that combines
-LLM-based intent understanding, historical support retrieval, grounded response generation,
-and evidence-aware escalation.
+An AI-powered customer-support agent for **AppleSupport** that combines LLM-based intent classification, historical support retrieval, grounded response generation, and evidence-aware escalation.
 
 <br/>
 
@@ -26,47 +24,70 @@ and evidence-aware escalation.
 
 ---
 
-# 🌟 Project Overview
+# 📖 Table of Contents
 
-Customer-support automation is not simply a matter of generating a good-sounding reply.
+- [Overview](#-overview)
+- [Problem Statement](#-problem-statement)
+- [Project Goals](#-project-goals)
+- [System Architecture](#-system-architecture)
+- [End-to-End Workflow](#-end-to-end-workflow)
+- [Dataset](#-dataset)
+- [Data Preparation](#-data-preparation)
+- [Intent Taxonomy](#-intent-taxonomy)
+- [Historical Retrieval](#-historical-retrieval)
+- [Response Generation](#-response-generation)
+- [Trust & Escalation](#-trust--escalation)
+- [Evaluation](#-evaluation)
+- [Golden Evaluation Set](#-golden-evaluation-set)
+- [Baselines](#-baselines)
+- [Production Verification](#-production-verification)
+- [Failure Modes](#-failure-modes)
+- [What Is Misleading About the Headline Number?](#-what-is-misleading-about-the-headline-number)
+- [Engineering Decisions](#-engineering-decisions)
+- [Repository Structure](#-repository-structure)
+- [Technology Stack](#-technology-stack)
+- [Installation](#-installation)
+- [Running the Agent](#-running-the-agent)
+- [Evaluation & Reproducibility](#-evaluation--reproducibility)
+- [Security](#-security)
+- [Known Limitations](#-known-limitations)
+- [What I Would Do Next](#-what-i-would-do-next)
+- [Final Takeaway](#-final-takeaway)
 
-A useful support agent should answer two different questions:
+---
 
-> **What is this customer asking about?**
+# 🚀 Overview
 
-and
+**Resolve Engine** is an AI-powered customer-support agent built using the **Customer Support on Twitter (TWCS)** dataset, with **AppleSupport** selected as the target brand.
 
-> **Do I have enough evidence to safely answer automatically?**
+The system is designed to answer a practical support question:
 
-**Resolve Engine** was designed around that distinction.
+> **Can this customer issue be safely handled automatically, and if so, what should the support agent say?**
 
-Built using the **Customer Support on Twitter (TWCS)** dataset, with **AppleSupport**
-selected as the target brand, the system takes a new customer message and:
+Given a new customer message, Resolve Engine:
 
-1. Classifies the customer's primary support intent.
-2. Retrieves historically similar AppleSupport interactions.
-3. Generates a response grounded in those historical cases.
-4. Evaluates whether the available evidence is strong enough.
-5. Decides between **AUTO-HANDLE** and **ESCALATE**.
-6. Provides supporting evidence and a reason for the decision.
+1. **Classifies** the customer's primary support intent.
+2. **Retrieves** historically similar AppleSupport interactions.
+3. **Generates** a response grounded in those historical interactions.
+4. **Evaluates** whether the available evidence is strong enough for automation.
+5. **Decides** between `AUTO-HANDLE` and `ESCALATE`.
+6. **Provides** a reason and supporting evidence for the decision.
 
-The core philosophy is:
+The core principle behind the system is:
 
 > **Evidence first. Automation second.**
 
-When the system does not have enough evidence, it is designed to escalate rather than confidently invent an answer.
+The agent is deliberately designed so that weak evidence can result in escalation instead of unsupported confidence.
 
 ---
 
 # 🎯 Problem Statement
 
-The project focuses on building a support agent that combines **understanding, historical precedent, response generation, and safe automation**.
-
-A naive implementation might look like:
+A naive customer-support chatbot can be implemented as:
 
 ```text
 Customer Message
        ↓
       LLM
        ↓
-   Generated Reply
+Generated Reply
