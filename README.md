@@ -555,21 +555,22 @@ It is:
 
 That distinction is the foundation of the system.
 
+
 ❤️ Final Takeaway
 
 ResolveEngine brings together:
 
-🧠 LLM Intent Classification
+ LLM Intent Classification
 
-🔎 Historical Support Retrieval
+ Historical Support Retrieval
 
-✍️ Grounded Response Generation
+ Grounded Response Generation
 
-🛡️ Conservative Trust Gating
+ Conservative Trust Gating
 
-👤 Human Escalation
+ Human Escalation
 
-📊 Explicit Evaluation
+ Explicit Evaluation
 
 The system does not attempt to automate every customer interaction.
 
