@@ -1,0 +1,4 @@
+brand: AppleSupport
+golden_set_size: 200
+retrieval_top_k: 5
+random_seed: 42
